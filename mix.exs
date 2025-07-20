@@ -64,6 +64,7 @@ defmodule AKSPrimalityTest.MixProject do
   defp deps do
     [
       {:perfect_power, "~> 1.0"},
+      {:lehmer_gcd, "~> 1.0"},
       {:nstandard, "~> 0.1"},
       {:ex_doc, "~> 0.31", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
