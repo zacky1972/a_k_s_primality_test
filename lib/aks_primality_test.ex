@@ -17,7 +17,7 @@ defmodule AKSPrimalityTest do
 
   ## Time Complexity
 
-  The algorithm runs in $O(\\log n^{12})$ time, making it polynomial but not practical
+  The algorithm runs in $O((\\log n)^{12})$ time, making it polynomial but not practical
   for large numbers compared to probabilistic tests like Miller-Rabin.
 
   ## Examples
