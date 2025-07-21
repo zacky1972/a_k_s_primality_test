@@ -10,6 +10,13 @@
         "nstandard",
         "primality",
         "Lehmer",
-        "tortient"
+        "tortient",
+        "stylesheet",
+        "exdoc",
+        "epub",
+        "Agrawal",
+        "Kayal",
+        "Saxena",
+        "coprime"
     ]
 }

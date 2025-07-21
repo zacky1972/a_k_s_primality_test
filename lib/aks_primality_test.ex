@@ -1,8 +1,101 @@
 defmodule AKSPrimalityTest do
   @moduledoc """
-  Documentation for `AKSPrimalityTest`.
+  Implementation of the AKS (Agrawal-Kayal-Saxena) primality test algorithm.
+
+  The AKS primality test is a deterministic polynomial-time algorithm for determining
+  whether a given number is prime. It was the first polynomial-time primality test
+  that is both general and deterministic.
+
+  ## Algorithm Overview
+
+  The AKS algorithm works in the following steps:
+
+  1. **Perfect Power Test**: Check if n is a perfect power ($a^b$ for some $a > 1$, $b > 1$)
+  2. **Order Finding**: Find the smallest r such that the order of n modulo r is greater than $\\log_2 n$
+  3. **GCD Test**: Check that n is coprime with all numbers up to r
+  4. **Polynomial Test**: Verify that $(X + a)^n \\equiv X^n + a (\\pmod X^r - 1, n)$ for certain values of a
+
+  ## Time Complexity
+
+  The algorithm runs in $O(\\log n^{12})$ time, making it polynomial but not practical
+  for large numbers compared to probabilistic tests like Miller-Rabin.
+
+  ## Examples
+
+      iex> AKSPrimalityTest.of(2)
+      true
+
+      iex> AKSPrimalityTest.of(3)
+      true
+
+      iex> AKSPrimalityTest.of(4)
+      false
+
+      iex> AKSPrimalityTest.of(17)
+      true
+
+      iex> AKSPrimalityTest.of(25)
+      false
+
+      iex> AKSPrimalityTest.of(127)
+      true
+
+      iex> AKSPrimalityTest.of(128)
+      false
+
+      iex> AKSPrimalityTest.of(8191)
+      true
+
+  ## Dependencies
+
+  This implementation depends on the following modules:
+  - `PerfectPower` - for perfect power detection
+  - `LehmerGcd` - for GCD calculations
+  - `PrimeFactorization` - for prime factorization
+
+  ## References
+
+  - Agrawal, M., Kayal, N., & Saxena, N. (2004). PRIMES is in P.
+    Annals of Mathematics, 781-793.
   """
 
+  @doc """
+  Determines whether a given positive integer is prime using the AKS primality test.
+
+  ## Parameters
+
+  - `n` - A positive integer to test for primality
+
+  ## Returns
+
+  - `true` if n is prime
+  - `false` if n is composite
+
+  ## Examples
+
+      iex> AKSPrimalityTest.of(2)
+      true
+
+      iex> AKSPrimalityTest.of(3)
+      true
+
+      iex> AKSPrimalityTest.of(4)
+      false
+
+      iex> AKSPrimalityTest.of(17)
+      true
+
+      iex> AKSPrimalityTest.of(25)
+      false
+
+  ## Algorithm Steps
+
+  1. **Special case**: 2 is always prime
+  2. **Perfect power test**: If n is a perfect power, it's composite
+  3. **Order finding**: Find suitable parameter r for polynomial test
+  4. **GCD verification**: Ensure n is coprime with numbers up to r
+  5. **Polynomial congruence**: Final verification using polynomial arithmetic
+  """
   @spec of(pos_integer()) :: boolean()
   def of(2), do: true
 
