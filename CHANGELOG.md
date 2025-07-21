@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.1.0
+## [v1.1.0] 2025-07-21
 
 - **Performance Optimization**: Refactored the `product/4` function in `AKSPrimalityTest` module to use tuples instead of maps for better performance
   - Replaced map-based coefficient storage with tuple-based storage
@@ -8,7 +8,7 @@
   - Removed unnecessary map-to-list conversion and sorting operations
   - Updated version from 1.0.0 to 1.1.0 in mix.exs
 
-## v1.0.0
+## [v1.0.0] 2025-07-21
 
 - **Initial Release**: Complete implementation of the AKS (Agrawal-Kayal-Saxena) primality test algorithm
   - **Core Algorithm**: Pure Elixir implementation of the deterministic polynomial-time primality test
