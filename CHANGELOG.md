@@ -1,5 +1,14 @@
 # Changelog
 
+## [v1.1.1] 2025-07-22
+
+- **Code Refactoring**: Improved code organization and readability in the `AKSPrimalityTest` module
+  - Extracted complex logic from the main `of/1` function into three helper functions: `step1/1`, `step2/1`, and `step3/1`
+  - Separated concerns: perfect power test, order finding, and GCD verification into distinct functions
+  - Improved code maintainability while preserving the same algorithmic behavior
+  - Enhanced readability by flattening nested logic and improving control flow
+  - Updated version from 1.1.0 to 1.1.1 in mix.exs
+
 ## [v1.1.0] 2025-07-21
 
 - **Performance Optimization**: Refactored the `product/4` function in `AKSPrimalityTest` module to use tuples instead of maps for better performance
