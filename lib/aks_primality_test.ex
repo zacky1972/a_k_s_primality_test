@@ -2,6 +2,8 @@ defmodule AKSPrimalityTest do
   @moduledoc """
   Documentation for `AKSPrimalityTest`.
   """
+
+  @spec of(pos_integer()) :: boolean()
   def of(2), do: true
 
   def of(n) do
@@ -35,9 +37,11 @@ defmodule AKSPrimalityTest do
     end
   end
 
-  defp order_lower_bound_condition(_, r, upper) when r > upper, do: r
+  @doc false
+  @spec order_lower_bound_condition(pos_integer(), pos_integer(), pos_integer()) :: pos_integer() | false
+  def order_lower_bound_condition(_, r, upper) when r > upper, do: r
 
-  defp order_lower_bound_condition(n, r, upper) do
+  def order_lower_bound_condition(n, r, upper) do
     cond do
       r < n and LehmerGcd.of(n, r) != 1 -> false
       case multiplicative_order(n, r, 1, rem(n, r)) do
