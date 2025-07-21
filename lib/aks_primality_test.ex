@@ -193,22 +193,18 @@ defmodule AKSPrimalityTest do
   defp product(n, r, ls1, ls2) do
     res =
       1..min(length(ls1) + length(ls2) - 1, r)
-      |> Enum.map(fn i -> {i, 0} end)
-      |> Enum.into(%{})
+      |> Enum.map(fn _ -> 0 end)
+      |> List.to_tuple()
 
-    res =
-      for a <- Enum.with_index(ls1), b <- Enum.with_index(ls2) do
-        {a, b}
-      end
-      |> Enum.map(fn {{a, i}, {b, j}} -> {rem(i + j, r), a * b} end)
-      |> Enum.reduce(res, fn {index, acc}, res ->
-        Map.put(res, index, Map.get(res, index, 0) + acc)
-      end)
-
-    res
-    |> Enum.sort(fn {i1, _}, {i2, _} -> i1 <= i2 end)
+    for a <- Enum.with_index(ls1), b <- Enum.with_index(ls2) do
+      {a, b}
+    end
+    |> Enum.map(fn {{a, i}, {b, j}} -> {rem(i + j, r), a * b} end)
+    |> Enum.reduce(res, fn {index, acc}, res ->
+      put_elem(res, index, elem(res, index) + acc)
+    end)
+    |> Tuple.to_list()
     |> Enum.reverse()
-    |> Enum.map(fn {_, v} -> v end)
     |> Enum.map(&rem(&1, n))
     |> Enum.reduce([], fn
       0, [] -> []
