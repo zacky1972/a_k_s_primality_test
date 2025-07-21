@@ -15,40 +15,39 @@ defmodule AKSPrimalityTest do
       upper = cl2n * cl2n
 
       case order_lower_bound_condition(n, 2, upper) do
-        false -> 
+        false ->
           false
 
         r ->
-          2..(min(r, n - 1))
-          |> Enum.all?(&LehmerGcd.of(n, &1) == 1)
-          |> case do
-            false -> 
-              false
-
-            true -> 
-              if n <= r do
-                true
-              else
-                1..(round(:math.sqrt(tortient(r)) * l2n) + 1)
-                |> Enum.all?(&is_congruent(&1, n, r))
-              end
-          end
+          2..min(r, n - 1)
+          |> Enum.all?(&(LehmerGcd.of(n, &1) == 1))
+          |> epilogue(n, r, l2n)
       end
     end
   end
 
+  defp epilogue(false, _, _, _), do: false
+  defp epilogue(true, n, r, _) when n <= r, do: true
+
+  defp epilogue(true, n, r, l2n) do
+    1..(round(:math.sqrt(tortient(r)) * l2n) + 1)
+    |> Enum.all?(&congruent?(&1, n, r))
+  end
+
   @doc false
-  @spec order_lower_bound_condition(pos_integer(), pos_integer(), pos_integer()) :: pos_integer() | false
+  @spec order_lower_bound_condition(pos_integer(), pos_integer(), pos_integer()) ::
+          pos_integer() | false
   def order_lower_bound_condition(_, r, upper) when r > upper, do: r
 
   def order_lower_bound_condition(n, r, upper) do
-    cond do
-      r < n and LehmerGcd.of(n, r) != 1 -> false
+    if r < n and LehmerGcd.of(n, r) != 1 do
+      false
+    else
       case multiplicative_order(n, r, 1, rem(n, r)) do
         nil -> order_lower_bound_condition(n, r + 1, upper)
         k when k > upper -> r
+        _ -> order_lower_bound_condition(n, r + 1, upper)
       end
-      true -> order_lower_bound_condition(n, r + 1, upper)
     end
   end
 
@@ -67,7 +66,7 @@ defmodule AKSPrimalityTest do
     end)
   end
 
-  defp is_congruent(a, n, r) do
+  defp congruent?(a, n, r) do
     i = rem(n, r)
     an = rem(a, n)
 
@@ -99,8 +98,8 @@ defmodule AKSPrimalityTest do
   end
 
   defp product(n, r, ls1, ls2) do
-    res = 
-      1..(min(length(ls1) + length(ls2) - 1, r))
+    res =
+      1..min(length(ls1) + length(ls2) - 1, r)
       |> Enum.map(fn i -> {i, 0} end)
       |> Enum.into(%{})
 
@@ -109,13 +108,15 @@ defmodule AKSPrimalityTest do
         {a, b}
       end
       |> Enum.map(fn {{a, i}, {b, j}} -> {rem(i + j, r), a * b} end)
-      |> Enum.reduce(res, fn {index, acc}, res -> Map.put(res, index, Map.get(res, index, 0) + acc) end)
+      |> Enum.reduce(res, fn {index, acc}, res ->
+        Map.put(res, index, Map.get(res, index, 0) + acc)
+      end)
 
     res
     |> Enum.sort(fn {i1, _}, {i2, _} -> i1 <= i2 end)
     |> Enum.reverse()
     |> Enum.map(fn {_, v} -> v end)
-    |> Enum.map(& rem(&1, n))
+    |> Enum.map(&rem(&1, n))
     |> Enum.reduce([], fn
       0, [] -> []
       v, res -> [v | res]

@@ -4,8 +4,8 @@ defmodule AKSPrimalityTest.MixProject do
   def project do
     [
       app: :a_k_s_primality_test,
-      version: "0.1.0",
-      elixir: "~> 1.18",
+      version: "1.0.0",
+      elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       name: "A k s primality test",
@@ -27,7 +27,7 @@ defmodule AKSPrimalityTest.MixProject do
   def docs do
     [
       main: "readme",
-      extras: ["README.md"]
+      extras: ["README.md", "LICENSE.md", "CHANGELOG.md"]
     ]
   end
 
@@ -44,7 +44,7 @@ defmodule AKSPrimalityTest.MixProject do
       check: [
         "hex.audit",
         "compile --warnings-as-errors --force",
-        "format --check-formatted",
+        "format --check-formatted --migrate",
         "credo",
         "deps.unlock --check-unused",
         "spellweaver.check",
