@@ -100,23 +100,34 @@ defmodule AKSPrimalityTest do
   def of(2), do: true
 
   def of(n) do
-    if PerfectPower.exponential_form?(n) do
+    if step1(n) do
       false
     else
-      l2n = :math.log2(n)
-      cl2n = ceil(l2n)
-      upper = cl2n * cl2n
+      s = {r, _} = step2(n)
 
-      case order_lower_bound_condition(n, 2, upper) do
-        false ->
-          false
-
-        r ->
-          2..min(r, n - 1)
-          |> Enum.all?(&(LehmerGcd.of(n, &1) == 1))
-          |> epilogue(n, r, l2n)
+      if r == false do
+        false
+      else
+        step3(n, s)
       end
     end
+  end
+
+  defp step1(n) do
+    PerfectPower.exponential_form?(n)
+  end
+
+  defp step2(n) do
+    l2n = :math.log2(n)
+    cl2n = ceil(l2n)
+    upper = cl2n * cl2n
+    {order_lower_bound_condition(n, 2, upper), l2n}
+  end
+
+  defp step3(n, {r, l2n}) do
+    2..min(r, n - 1)
+    |> Enum.all?(&(LehmerGcd.of(n, &1) == 1))
+    |> epilogue(n, r, l2n)
   end
 
   defp epilogue(false, _, _, _), do: false
