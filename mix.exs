@@ -9,7 +9,8 @@ defmodule AKSPrimalityTest.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       name: "A k s primality test",
-      description: "TODO: write a proper description",
+      description:
+        "A pure Elixir implementation of the AKS (Agrawal-Kayal-Saxena) primality test algorithm.",
       docs: docs(),
       package: package(),
       aliases: aliases(),
@@ -87,7 +88,7 @@ defmodule AKSPrimalityTest.MixProject do
     [
       name: :a_k_s_primality_test,
       licenses: ["Apache-2.0"],
-      links: %{"GitHub" => "https://github.com/TODO/a_k_s_primality_test"}
+      links: %{"GitHub" => "https://github.com/zacky1972/a_k_s_primality_test"}
     ]
   end
 
